@@ -65,7 +65,6 @@
 
 
 <script>
-import { date } from 'quasar'
 import moment, { locale } from 'moment'
 import AppHelper from './AppHelper'
 
@@ -74,31 +73,10 @@ export default {
   
   data () {
     return {
-    date: AppHelper.date ,
+    date: AppHelper.date,
     n:'',
     vision: false,
-    subjects: [{
-          name: 'Алгебра',
-          assessment:[ 5 , 4 , 3 , 2, 2, 2, 2, 2, 2, 2, 2 ]
-        }, {
-          name: 'Русский язык',
-          assessment:[ 5 , 4 , 3 , 3]
-        }, {
-          name: 'Иностранный',
-          assessment:[5 , 4 , 3 , 2 ]
-        }, {
-          name: 'География',
-          assessment:[4 , 4 , 3 , 2 ]
-        }, {
-          name: 'История',
-          assessment:[5 , 4 , 3 , 2 ]
-        }, {
-          name: 'Физика',
-          assessment:[5 , 4 , 3 , 2 ]
-        }, {
-          name: 'Физкультура',
-          assessment:[5 , 4 , 3 , 2 ]
-      }],
+    subjects: AppHelper.subjects
     }
   },
   computed:{
