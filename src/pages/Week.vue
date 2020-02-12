@@ -1,6 +1,6 @@
   <template>
 <div class="q-pa-md">
-    <div class="row" style="align-items: center;">
+    <div class="q-pb-ms row" style="align-items: center;">
       <div class="col-1">
         <q-btn class="float-left q-pr-sn"  icon="keyboard_arrow_left"  flat
         dense @click="minusWeek()" />
@@ -14,26 +14,36 @@
         <q-btn class="float-right q-pl-sn"  icon="keyboard_arrow_right"  flat
         dense @click="plusWeek()" />
       </div>
-    <div class="q-gutter-md items-start" id="picker" :style="vision? 'display:block!important' : 'display:none!important'">
-      <q-date  v-model="date" @click="()=>{vision = !vision;}"
+    <div class="q-mt-sm row justify-center items-center"  id="picker" 
+      :style="vision? 'display:block!important' : 'display:none!important'"
+    >
+      <!-- @click="()=>{vision = !vision;}" 
+       @change="closePicker"
+       -->
+      <q-date class="col"
+        v-model="date" 
+        minimal
         v-touch-swipe.mouse.right="handleSwipeR"
         v-touch-swipe.mouse.left="handleSwipeL"
-         />
+        v-touch-swipe.mouse.up="handleSwipeT"
+        />
+        
     </div>
     <q-card
-      class="my-card"
+      class="q-mt-sm my-card"
+      bordered
     >
-      <q-card-section class="text-white" style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
-      v-touch-swipe.mouse.right="handleSwipeWeekR"
-      v-touch-swipe.mouse.left="handleSwipeWeekL"
-       >
-        <div class="text-h6" >
-        <!-- v-for="(day, index) in days" :key="index" -->
-          day
+      <q-card-section class="text-white"
+        style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
+        v-touch-swipe.mouse.right="handleSwipeWeekR"
+        v-touch-swipe.mouse.left="handleSwipeWeekL"
+        >
+        <div class="text-h6"  v-for="(objectDay, index) in objectDays.date" :key="index" >
+          {{objectDay.date}}
+          <q-card-section class="" v-for="subject in subjects" :key="subject.name">
+            {{subject.name}}: {{subject.assessment}}
+          </q-card-section>
         </div>
-        <q-card-section class="q-pt-none" v-for="subject in subjects" :key="subject.name">
-          {{subject.name}}: {{subject.assessment}}
-        </q-card-section>
       </q-card-section>
     </q-card>
   </div>
@@ -45,42 +55,34 @@
 .dateFond{
  background: white;
  width: 100%;
-
 }
 .my-card{
   width: 100%;
 }
+
 
 </style>
 
 
 <script>
 import { date } from 'quasar'
-import moment, { locale } from 'moment';
+import moment, { locale } from 'moment'
+import AppHelper from './AppHelper'
 
 
 export default {
+  
   data () {
     return {
-    date: new Date(Date.now()) ,
+    date: AppHelper.date ,
     n:'',
-    // .toLocaleString('ru', {
-    //     year: 'numeric',
-    //     month: 'long',
-    //     weekday: 'narrow',
-    //     day: 'numeric',
-    // })
-    objectDay:[],
- 
-
     vision: false,
-    
     subjects: [{
           name: 'Алгебра',
-          assessment:[5 , 4 , 3 , 2, 2, 2, 2, 2, 2, 2, 2 ]
+          assessment:[ 5 , 4 , 3 , 2, 2, 2, 2, 2, 2, 2, 2 ]
         }, {
           name: 'Русский язык',
-          assessment:[5 , 4 , 3 , 3]
+          assessment:[ 5 , 4 , 3 , 3]
         }, {
           name: 'Иностранный',
           assessment:[5 , 4 , 3 , 2 ]
@@ -102,33 +104,27 @@ export default {
   computed:{
     formatBtn(date){
       this.n = new Date(this.date)
-      let monthplus = moment(this.n).add(1, 'month');
-      let quantityDays = Math.round((monthplus - this.n) / 1000 / 3600 / 24);//кл-во дней в месяце
       let startw = moment(this.n).startOf('isoWeeks'); //начало недели 
       let endw = moment(this.n).endOf('isoWeeks');//конец недели
       let stroka = `${moment(startw).format('DD')}-${moment(endw).format('DD')} ${moment(this.date).locale('ru').format('MMMM YYYY')}`
       return stroka
     },
-    weekDay(){
-      let d = this.date
-      for (let i = 1; i < 7; i++) { 
-       let a = moment(d).isoWeekday(i).locale('ru').format('dddd')
-       this.objectDay = a
-      }
-      return this.objectDay
-    },
-    // month(date){
-    //     let t = new Date(this.date)
-    //     let newDate = t(new Date(), { month: 1 })
-    //     console.log(newDate)
-    //   }
-    // нипайму как привязать текущий день к нужному ему массиву рассписания
-    // week(){
-    //   this.days[0] = this.subjects[0],[1],[2]
-    //   this.days[1] = this.subjects[3],[2],[4]
-    // }
-    },
-    filters: {
+    objectDays() {
+    return {
+      date: [ 
+      { id:1, date: moment(this.date).isoWeekday(1).locale('ru').format('dddd, D MMM')},
+      { id:2, date: moment(this.date).isoWeekday(2).locale('ru').format('dddd, D MMM')},
+      { id:3, date: moment(this.date).isoWeekday(3).locale('ru').format('dddd, D MMM')},
+      { id:4, date: moment(this.date).isoWeekday(4).locale('ru').format('dddd, D MMM')},
+      { id:5, date: moment(this.date).isoWeekday(5).locale('ru').format('dddd, D MMM')},
+      { id:6, date: moment(this.date).isoWeekday(6).locale('ru').format('dddd, D MMM')}
+      ]}
+      },
+
+    // не пойму как привязать текущий день к нужному ему массиву рассписания
+
+    
+
   },
   methods:{
       plusWeek(date){
@@ -136,6 +132,7 @@ export default {
         t = moment(t).add(1,'isoWeek')
         this.date = t
         return this.date
+        alert(this.date.day)
       },
       minusWeek(date){
         let t = this.date
@@ -170,6 +167,9 @@ export default {
         this.date = t
         return this.date
       },
+      handleSwipeT(){
+        return this.vision=!this.vision
+      }
     },
   
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a href="http://localhost:8080/week"><h3>Электронный журнал</h3></a>
+  <router-link to="/week"><h3>Электронный журнал</h3></router-link>
     <span >Школа № 30</span>
   </div>
 

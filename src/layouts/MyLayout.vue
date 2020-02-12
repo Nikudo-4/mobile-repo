@@ -16,23 +16,23 @@
         </q-toolbar-title>
 
      <div class="q-pa-md">
-      <!-- <q-btn-dropdown color="primary" size="xs">
-        <q-list>
-          <q-item clickable v-close-popup @click="onItemClick1">
-            <q-item-section>
-              <q-item-label>Неделя</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item clickable v-close-popup @click="onItemClick2">
-            <q-item-section>
-              <q-item-label>Список</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown> -->
+      <q-btn color="primary" size="xs"
+        to="/list"
+        clickable
+        @click="linkedBtn"
+        v-if="!w"
+        >
+        {{btntitle}}
+      </q-btn>
+      <q-btn color="primary" size="xs"
+        to="/week"
+        clickable
+        @click="linkedBtn"
+        v-else-if="w"
+        >
+        {{btntitle}}
+      </q-btn>
       
-
     </div>
       </q-toolbar>
 
@@ -153,10 +153,13 @@ import { openURL } from 'quasar'
 export default {
   name: 'MyLayout',
 
+
   data () {
     return {
+      //date1: new Date(Date.now()),
       leftDrawerOpen: false,
-       tab: 'mails'
+       tab: 'mails',
+        w:false
     }
   },
     computed:{
@@ -165,14 +168,9 @@ export default {
         if (currentPath == '/week') return 'Неделя'
         else if (currentPath == '/list') return 'Список'
         else return 'Неделя'
+      },
 
-      },
-      PathMoveOn() {
-        let currentPath = this.$route.fullPath
-        if (currentPath == '/week') return $router.openURL('/list')
-        else if (currentPath == '/list') return 'http://localhost:8080/#/list'
-        else return '/week'
-      },
+
     },
      methods: {
       onItemClick1 () {
@@ -181,6 +179,30 @@ export default {
       onItemClick2 () {
        console.log('Clicked on an Item2')
       },
+      linkedBtn(){
+        let currentPath = this.$route.fullPath
+        if (currentPath == '/week') {
+          this.w = !this.w
+          return this.w
+          }
+        else if (currentPath == '/list'){
+          this.w = !this.w
+          return this.w
+          }
+      },
+      //       linkedBtn(){
+      //   let currentPath = this.$route.fullPath
+      //   if (currentPath == '/week') {
+      //     this.w = !this.w
+      //     this.l = !this.l
+      //     return this.l
+      //     }
+      //   else if (currentPath == '/list'){
+      //     this.w = !this.w
+      //     this.l = !this.l
+      //     return this.w
+      //     }
+      // },
     }
 }
 </script>
