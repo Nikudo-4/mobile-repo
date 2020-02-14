@@ -5,29 +5,16 @@
     <span >Школа № 30</span>
 =======
   <router-link to="/week"><h3>Электронный журнал</h3></router-link>
+<<<<<<< HEAD
       <span >Школа № 30</span>
     <q-btn @click="scan">Сканировать QR</q-btn>
 >>>>>>> a9a7c9255d534afc06e583cda6bfe93d5377e4a1
+=======
+    <span >Школа № 30</span>
+>>>>>>> parent of a9a7c92... some shit
   </div>
+
 </template>
 
 <script>
-export default{
-methods:{
- scan(){
-   cordova.plugins.barcodeScanner.scan(
-      function (result) {
-          alert("We got a barcode\n" +
-                "Result: " + result.text + "\n" +
-                "Format: " + result.format + "\n" +
-                "Cancelled: " + result.cancelled);
-      },
-      function (error) {
-          alert("Scanning failed: " + error);
-      }
-   );
- }
-}
-}
-  
 </script>
