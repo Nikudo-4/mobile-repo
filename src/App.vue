@@ -1,16 +1,11 @@
 <template>
   <div id="q-app">
-    <router-view :date='date' />
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-  data(){
-    return{
-    
-    }
-  }
+  name: 'App'
 }
 </script>
